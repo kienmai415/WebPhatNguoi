@@ -4,10 +4,14 @@
  */
 package Dao;
 
+import Model.Violation;
+
 /**
  *
  * @author maiki
  */
 public class ViolationsDao {
-    
+    public void addViolation(ViolationsDao violation) {
+        String a = "";// TODO code application logic here
+    }
 }
