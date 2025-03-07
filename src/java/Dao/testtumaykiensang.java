@@ -15,6 +15,6 @@ public class testtumaykiensang {
         System.out.println("oke ");
         System.out.println("hhhhhhh");
         System.out.println("test");
-                
+        System.out.println("test lan 2");       
     }
 }
