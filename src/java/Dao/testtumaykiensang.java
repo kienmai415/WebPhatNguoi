@@ -15,6 +15,8 @@ public class testtumaykiensang {
         System.out.println("oke ");
         System.out.println("hhhhhhh");
         System.out.println("test");
-        System.out.println("test lan 2");       
+        System.out.println("test lan 2");  
+        System.out.println("test lan 3");
+        System.out.println("lieu co thanh cong???");
     }
 }
