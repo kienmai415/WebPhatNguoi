@@ -11,5 +11,7 @@ package Dao;
 public class testtumaykiensang {
     public static void main(String[] args) {
         System.out.println("helloban");
+        System.out.println("thay code roi nhe");
+        System.out.println("oke ");
     }
 }
