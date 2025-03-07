@@ -4,7 +4,7 @@
  */
 package Dao;
 
-import Model.Violation;
+import Model.Violations;
 
 /**
  *
