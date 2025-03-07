@@ -14,5 +14,7 @@ public class testtumaykiensang {
         System.out.println("thay code roi nhe");
         System.out.println("oke ");
         System.out.println("hhhhhhh");
+        System.out.println("test");
+                
     }
 }
