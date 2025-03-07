@@ -4,10 +4,14 @@
  */
 package Dao;
 
+import Model.Violations;
+
 /**
  *
  * @author maiki
  */
 public class ViolationsDao {
-    
+    public static void main(String[] args) {
+        
+    }
 }
