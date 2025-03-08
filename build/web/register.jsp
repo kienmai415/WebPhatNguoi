@@ -1,14 +1,15 @@
-<%-- 
-    Document   : login
-    Created on : Mar 7, 2025, 11:15:20 PM
-    Author     : admin
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    String status = request.getParameter("status");
+    if ("fail".equals(status)) { 
+%>
+    <div class="alert alert-danger text-center">⚠️ Đăng ký thất bại. Vui lòng thử lại!</div>
+<% } %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Login</title>
+        <title>Register</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <!-- Link Bootstrap 5 -->
@@ -19,11 +20,16 @@
     <body>
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card p-4 shadow-lg" style="width: 400px;">
-                <h3 class="text-center">Login</h3>
-                <a href="#" class="text-primary text-center d-block mb-3">Don't have an account?</a>
+                <h3 class="text-center">Register</h3>
+                <a href="login.jsp" class="text-primary text-center d-block mb-3">Already have an account?</a>
 
-                <!-- Form đăng nhập -->
-                <form action="LoginServlet" method="post">
+                <!-- Form đăng ký -->
+                <form action="InsertUser" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="fullName" class="form-control" placeholder="Full Name" required>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Email Address</label>
                         <input type="email" name="email" class="form-control" placeholder="Email Address" required>
@@ -34,22 +40,23 @@
                         <input type="password" name="password" class="form-control" placeholder="Password" required>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Keep me signed in</label>
-                        </div>
-                        <a href="#" class="text-secondary text-decoration-none">Forgot Password?</a>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input type="text" name="address" class="form-control" placeholder="Address" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <p>${message}</p>
                 </form>
             </div>
         </div>
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-</html>
     </body>
 </html>
