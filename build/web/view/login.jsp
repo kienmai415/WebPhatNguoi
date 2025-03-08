@@ -1,8 +1,4 @@
-<%-- 
-    Document   : login
-    Created on : Mar 7, 2025, 11:15:20 PM
-    Author     : admin
---%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +10,8 @@
         <!-- Link Bootstrap 5 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- File CSS Custom -->
-        <link rel="stylesheet" href="style.css">
+<!--        <link href="../css/style.min.css" rel="stylesheet" type="text/css"/>-->
+<link href="../css/styleLogin.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="container d-flex justify-content-center align-items-center vh-100">
@@ -33,6 +30,17 @@
                         <label class="form-label">Password</label>
                         <input type="password" name="password" class="form-control" placeholder="Password" required>
                     </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Login as</label>
+                        <select name="role" class="form-select" required>
+                            <option value="Owner">Vehicle owner</option>
+                            <option value="InspectionCenter">Testing facility</option>
+                            <option value="Inspector">Technician</option>
+                            <option value="TrafficPolice">Traffic police</option>
+                        </select>
+                    </div>
+
 
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="form-check">
