@@ -89,3 +89,11 @@ label {
 .btn-primary:hover {
     background-color: #0056b3;
 }
+.dropdown-menu {
+            left: 0 !important; /* Đảm bảo dropdown bắt đầu từ vị trí của nút */
+            right: auto; /* Đảm bảo không lệch sang phải */
+            transform: none !important; /* Xóa hiệu ứng dịch chuyển mặc định */
+        }
+.nav-item {
+            position: static; /* Đảm bảo vị trí không bị ảnh hưởng bởi các yếu tố khác */
+        }
