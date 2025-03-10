@@ -80,9 +80,13 @@ public class LoginServlet extends HttpServlet {
         // Lấy dữ liệu từ form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
-        // Kiểm tra đầu vào
-        String errorMessage = null;
+        if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            request.setAttribute("error", "Email và mật khẩu không được để trống!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        
+           
 
 //        if (email == null || email.trim().isEmpty()) {
 //            errorMessage = "Email không được để trống!";
@@ -94,12 +98,12 @@ public class LoginServlet extends HttpServlet {
 //            errorMessage = "Mật khẩu phải có ít nhất 6 ký tự!";
 //        }
 
-        // Nếu có lỗi, quay lại trang đăng nhập
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
+//        // Nếu có lỗi, quay lại trang đăng nhập
+//        if (errorMessage != null) {
+//            request.setAttribute("errorMessage", errorMessage);
+//            request.getRequestDispatcher("login.jsp").forward(request, response);
+//            return;
+//        }
 
         // Gọi DAO để kiểm tra tài khoản
         UsersDao usersDao = new UsersDao();
@@ -114,8 +118,8 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("home.jsp");
         } else {
             // Đăng nhập thất bại -> Hiển thị lỗi
-            request.setAttribute("errorMessage", "Sai tài khoản hoặc mật khẩu!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.setAttribute("error", "❌ Sai tài khoản hoặc mật khẩu!");
+             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 
