@@ -9,7 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Update Profile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Link Bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- File CSS Custom -->
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <div class="container d-flex justify-content-center align-items-center vh-100">
