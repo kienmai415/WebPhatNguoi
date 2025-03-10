@@ -14,24 +14,24 @@
     <body>
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card p-4 shadow-lg" style="width: 400px;">
-                <h3 class="text-center">Update Profile</h3>
+                <h3 class="text-center">Cập nhật hồ sơ</h3>
 
 
                 <form action="UpdateProfileServlet" method="post">
                     <div class="mb-3">
-                        <label class="form-label">Full Name</label>
+                        <label class="form-label">Họ và tên</label>
                         <input type="text" name="fullName" class="form-control" 
                                value="${getuser.fullName}" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label">Số điện thoại</label>
                         <input type="text" name="phone" class="form-control" 
                                value="${getuser.phone}" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Address</label>
+                        <label class="form-label">Địa chỉ</label>
                         <input type="text" name="address" class="form-control" 
                                value="${getuser.address}" required>
                     </div>

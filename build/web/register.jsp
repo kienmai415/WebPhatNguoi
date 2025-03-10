@@ -20,37 +20,37 @@
     <body>
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card p-4 shadow-lg" style="width: 400px;">
-                <h3 class="text-center">Register</h3>
+                <h3 class="text-center">Đăng kí</h3>
                 <a href="login.jsp" class="text-primary text-center d-block mb-3">Already have an account?</a>
 
                 <!-- Form đăng ký -->
                 <form action="InsertUser" method="post">
                     <div class="mb-3">
-                        <label class="form-label">Full Name</label>
+                        <label class="form-label">Họ tên</label>
                         <input type="text" name="fullName" class="form-control" placeholder="Full Name" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Email Address</label>
+                        <label class="form-label">Địa chỉ Email</label>
                         <input type="email" name="email" class="form-control" placeholder="Email Address" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Password</label>
+                        <label class="form-label">Mật khẩu</label>
                         <input type="password" name="password" class="form-control" placeholder="Password" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label">Số điện thoại</label>
                         <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Address</label>
+                        <label class="form-label">Địa chỉ</label>
                         <input type="text" name="address" class="form-control" placeholder="Address" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <button type="submit" class="btn btn-primary w-100">Đăng kí</button>
                     <p>${message}</p>
                 </form>
             </div>
