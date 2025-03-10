@@ -49,7 +49,7 @@
                         <label class="form-label">Address</label>
                         <input type="text" name="address" class="form-control" placeholder="Address" required>
                     </div>
-
+l
                     <button type="submit" class="btn btn-primary w-100">Register</button>
                     <p>${message}</p>
                 </form>
