@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Address</label>
+                        <label class="form-label">add</label>
                         <input type="text" name="address" class="form-control" placeholder="Address" required>
                     </div>
 
