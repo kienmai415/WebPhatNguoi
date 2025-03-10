@@ -15,18 +15,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.regex.Pattern;
 
 /**
  *
  * @author maiki
  */
-@WebServlet(name="LoginServlet", urlPatterns={"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-   private static final long serialVersionUID = 1L;
-
-    // Regex kiểm tra định dạng email
-    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+@WebServlet(name="ChangePasswordServlet", urlPatterns={"/ChangePasswordServlet"})
+public class ChangePasswordServlet extends HttpServlet {
+   
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -42,10 +38,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("<title>Servlet ChangePasswordServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ChangePasswordServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,8 +58,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        //processRequest(request, response);
-        response.sendRedirect("login.jsp");
+        processRequest(request, response);
     } 
 
     /** 
@@ -74,50 +69,50 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        // Lấy dữ liệu từ form
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        //processRequest(request, response);
+        HttpSession session = request.getSession();
+        Users user = (Users) session.getAttribute("loggedUser"); // Lấy user từ session
 
-        // Kiểm tra đầu vào
-        String errorMessage = null;
-
-//        if (email == null || email.trim().isEmpty()) {
-//            errorMessage = "Email không được để trống!";
-//        } else if (!Pattern.matches(EMAIL_PATTERN, email)) {
-//            errorMessage = "Email không hợp lệ!";
-//        } else if (password == null || password.trim().isEmpty()) {
-//            errorMessage = "Mật khẩu không được để trống!";
-//        } else if (password.length() < 6) {
-//            errorMessage = "Mật khẩu phải có ít nhất 6 ký tự!";
-//        }
-
-        // Nếu có lỗi, quay lại trang đăng nhập
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        if (user == null) {
+            response.sendRedirect("login.jsp"); // Nếu chưa đăng nhập, chuyển hướng về login
             return;
         }
 
-        // Gọi DAO để kiểm tra tài khoản
-        UsersDao usersDao = new UsersDao();
-        Users user = usersDao.authenticate(email, password);
-        
-        if (user != null) {
-            // Đăng nhập thành công -> Lưu vào session
-            HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
+        // Lấy thông tin từ form
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
 
-            // Điều hướng về trang home.jsp
-            response.sendRedirect("home.jsp");
-        } else {
-            // Đăng nhập thất bại -> Hiển thị lỗi
-            request.setAttribute("errorMessage", "Sai tài khoản hoặc mật khẩu!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        // Kiểm tra mật khẩu cũ có đúng không
+        if (!user.getPassword().equals(oldPassword)) {
+            request.setAttribute("message", "❌ Mật khẩu cũ không chính xác!");
+            request.getRequestDispatcher("changepassword.jsp").forward(request, response);
+            return;
         }
+
+        // Kiểm tra mật khẩu mới có khớp với xác nhận không
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("message", "⚠️ Mật khẩu mới không khớp!");
+            request.getRequestDispatcher("changepassword.jsp").forward(request, response);
+            return;
+        }
+
+        // Cập nhật mật khẩu mới vào database
+        user.setPassword(newPassword);
+        boolean updateSuccess = UsersDao.updatePassword(user.getEmail(), newPassword);
+
+        if (updateSuccess) {
+            session.setAttribute("loggedUser", user); // Cập nhật lại session
+            request.setAttribute("message", "✅ Đổi mật khẩu thành công!");
+        } else {
+            request.setAttribute("message", "❌ Đổi mật khẩu thất bại, vui lòng thử lại.");
+        }
+
+        request.getRequestDispatcher("changepassword.jsp").forward(request, response);
     }
+    
 
     /** 
      * Returns a short description of the servlet.
