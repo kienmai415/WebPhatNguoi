@@ -71,6 +71,8 @@ public class ChangePasswordServlet extends HttpServlet {
                     request.setAttribute("message", "⚠️ Mật khẩu mới không khớp!");
                     request.getRequestDispatcher("changepassword.jsp").forward(request, response);
                     return;
+                    /*
+                    jdfjd*/
                 }
 
                 // Cập nhật mật khẩu mới vào database
