@@ -31,12 +31,13 @@ public class DBContext { //singleton pattern
                 
                 String password = "sa";
                 //duong dan
-                String url = "jdbc:sqlserver://localhost:1433;databaseName=WebPhatNguoiPRJ301";
+                String url = "jdbc:sqlserver://localhost:1433;databaseName=AppGiaoThongPRJ301;user=sa;password=sa;";
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 connection = DriverManager.getConnection(url, user, password);
                         
             }
         }catch(Exception e){
+            e.printStackTrace();
             connection = null;
         }
     }
