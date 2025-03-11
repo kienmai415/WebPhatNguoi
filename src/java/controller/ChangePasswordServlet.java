@@ -105,7 +105,7 @@ public class ChangePasswordServlet extends HttpServlet {
 
         if (updateSuccess) {
             session.setAttribute("loggedUser", user); // Cập nhật lại session
-            request.setAttribute("message", "✅  Đổi mật khẩu thành công!");
+            request.setAttribute("message", "✅ Đổi mật khẩu thành công!");
         } else {
             request.setAttribute("message", "❌ Đổi mật khẩu thất bại, vui lòng thử lại.");
         }
