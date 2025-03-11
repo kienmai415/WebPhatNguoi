@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/dashboard/admin.jsp</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/login.jsp</file>
-            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/DBContext.java</file>
-            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/css/style.css</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/LoginServlet.java</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/changepassword.jsp</file>
-            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/ChangePasswordServlet.java</file>
-            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/updateprofile.jsp</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/home.jsp</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Users.java</file>
-            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/UpdateProfileServlet.java</file>
-            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/UsersDao.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/dashboard/police.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Reports.java</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/register.jsp</file>
         </group>
     </open-files>
