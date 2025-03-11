@@ -21,7 +21,7 @@
         
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card p-4 shadow-lg" style="width: 400px;">
-                <h3 class="text-center">ChangePassword</h3>
+                <h3 class="text-center">Đổi mật khẩu</h3>
                 
 
                 
