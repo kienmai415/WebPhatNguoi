@@ -114,6 +114,9 @@ public class LoginServlet extends HttpServlet {
             // Đăng nhập thành công -> Lưu vào session
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
+            session.setAttribute("FullName", user.getFullName());
+            session.setAttribute("role", user.getRoleID()); // userRole phải là "police" nếu là cảnh sát
+            
             if (user.getRoleID() == 1) {
                 response.sendRedirect("dashboard/admin.jsp");
             } else if (user.getRoleID() == 2) {

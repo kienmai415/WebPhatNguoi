@@ -10,6 +10,7 @@ package Model;
  */
 public class Vehicles {
     private int VehicleID; 
+    private String VehicleType;
     private String PlateNumber;
     private int OwnerID; 
     private String Brand; 
@@ -19,8 +20,9 @@ public class Vehicles {
     public Vehicles() {
     }
 
-    public Vehicles(int VehicleID, String PlateNumber, int OwnerID, String Brand, String Model, String ManufactureYear) {
+    public Vehicles(int VehicleID, String VehicleType, String PlateNumber, int OwnerID, String Brand, String Model, String ManufactureYear) {
         this.VehicleID = VehicleID;
+        this.VehicleType = VehicleType;
         this.PlateNumber = PlateNumber;
         this.OwnerID = OwnerID;
         this.Brand = Brand;
@@ -34,6 +36,14 @@ public class Vehicles {
 
     public void setVehicleID(int VehicleID) {
         this.VehicleID = VehicleID;
+    }
+
+    public String getVehicleType() {
+        return VehicleType;
+    }
+
+    public void setVehicleType(String VehicleType) {
+        this.VehicleType = VehicleType;
     }
 
     public String getPlateNumber() {
@@ -75,5 +85,9 @@ public class Vehicles {
     public void setManufactureYear(String ManufactureYear) {
         this.ManufactureYear = ManufactureYear;
     }
+
+    
+
+    
     
 }
