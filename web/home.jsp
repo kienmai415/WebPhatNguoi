@@ -68,7 +68,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto" >
                         <li class="nav-item"><a class="nav-link" href="report.jsp">📸 Gửi Phản Ánh</a></li>
                         <li class="nav-item"><a class="nav-link" href="history.jsp">📜 Lịch Sử</a></li>
                         <li class="nav-item"><a class="nav-link" href="notifications.jsp">🔔 Thông Báo</a></li>
@@ -107,57 +107,59 @@
                 <a href="InsertUser" class="btn btn-primary btn-lg">📸 Gửi phản ánh ngay</a>
             </div>
 
-            <!-- Lịch sử phản ánh -->
-            <div class="mt-4">
-                <h4>📜 Lịch sử phản ánh gần đây</h4>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Loại vi phạm</th>
-                            <th>Địa điểm</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Vượt đèn đỏ</td>
-                            <td>Nguyễn Trãi, Hà Nội</td>
-                            <td><span class="badge bg-warning">Đang xử lý</span></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Đi sai làn</td>
-                            <td>Đường Lê Văn Lương</td>
-                            <td><span class="badge bg-success">Đã duyệt</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
-            <!-- Thống kê -->
-            <div class="mt-4 row text-center">
-                <div class="col-md-4">
-                    <div class="card p-3 shadow">
-                        <h4>📸 10</h4>
-                        <p>Phản ánh đã được gửi.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card p-3 shadow">
-                        <h4>✅ 7</h4>
-                        <p>Phản ánh đã xử lý.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card p-3 shadow">
-                        <h4>⚠️ 3</h4>
-                        <p>Phản ánh đang xử lý.</p>
-                    </div>
-                </div>
-            </div>
+<!-- Thanh tra cứu phương tiện -->
+<div class="container">
+    <h2>TRA CỨU PHƯƠNG TIỆN VI PHẠM GIAO THÔNG</h2>
+    <form action="SearchVehicleServlet" method="POST">
+        <div class="form-group">
+            <label for="plateNumber">Biển kiểm soát</label>
+            <input type="text" class="form-control" id="plateNumber" name="plateNumber" placeholder="VD: 30A12345" required>
         </div>
+
+        <div class="form-group">
+            <label for="vehicleType">Loại phương tiện</label>
+            <select class="form-control" id="vehicleType" name="vehicleType" required>
+                <option value="Ô tô">Ô tô</option>
+                <option value="Xe máy">Xe máy</option>
+                <option value="Xe đạp">Xe đạp</option>
+                <!-- Thêm các loại phương tiện khác nếu cần -->
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tra cứu</button>
+    </form>
+
+    <!-- Hiển thị kết quả tra cứu -->
+    <div id="result" style="margin-top: 20px;">
+        <c:if test="${not empty vehicle}">
+            <h3>Thông tin phương tiện:</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Biển kiểm soát</th>
+                        <th>Loại phương tiện</th>
+                        <th>ID chủ sở hữu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${vehicle.plateNumber}</td>
+                        <td>${vehicle.vehicleType}</td>
+                        <td>${vehicle.ownerID}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">
+                ${error}
+            </div>
+        </c:if>
+    </div>
+</div>
+
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
