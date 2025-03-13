@@ -118,9 +118,9 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("role", user.getRoleID()); // userRole phải là "police" nếu là cảnh sát
             
             if (user.getRoleID() == 1) {
-                response.sendRedirect("dashboard/admin.jsp");
+                response.sendRedirect("admin.jsp");
             } else if (user.getRoleID() == 2) {
-                response.sendRedirect("dashboard/police.jsp");
+                response.sendRedirect("police.jsp");
             } else {
                 response.sendRedirect("home.jsp");
             }

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Admin
-    Created on : Mar 10, 2025, 11:55:24 PM
+    Document   : history
+    Created on : Mar 13, 2025, 12:51:26 AM
     Author     : maiki
 --%>
 
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>ADMINNNNNNNNNNNNN NE</h1>
+        <h1>Hello World!</h1>
     </body>
 </html>
