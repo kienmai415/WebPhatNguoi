@@ -54,7 +54,7 @@ public class ReportsDao {
 
     public boolean submitReport(Reports report) {
         String sql = "INSERT INTO Reports (ReporterID, ViolationType, Description, PlateNumber, ImageURL, VideoURL, Location, ReportDate, Status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, report.getReporterID());
@@ -64,7 +64,8 @@ public class ReportsDao {
             ps.setString(5, report.getImageURL());
             ps.setString(6, report.getVideoURL());
             ps.setString(7, report.getLocation());
-            ps.setString(8, report.getStatus());
+            ps.setString(8, report.getReportDate());
+            ps.setString(9, report.getStatus());
 
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -78,7 +79,25 @@ public class ReportsDao {
 
     public static void main(String[] args) {
         Reports rp = new Reports();
+        ReportsDao rpt = new ReportsDao();
         Reports rps = ReportsDao.getReportByUser(2);
+        boolean report = rpt.submitReport(rp);
+        rp.setReporterID(3);
+        rp.setViolationType("no_helmet");
+        rp.setDescription("Không đội mũ bảo hiểm");
+        rp.setPlateNumber("30A-12345");
+        rp.setImageURL("uploads/image.jpg");
+        rp.setVideoURL("uploads/video.mp4");
+        rp.setLocation("Hà Nội");
+        rp.setReportDate("2024-03-14");
+        rp.setStatus("Pending");
+        ReportsDao rd = new ReportsDao();
+         boolean result = rd.submitReport(rp);
+        if (result) {
+            System.out.println("✅ Báo cáo được lưu thành công!");
+        } else {
+            System.err.println("❌ Gửi báo cáo thất bại!");
+        }
         //System.out.println(rps);
 
     }

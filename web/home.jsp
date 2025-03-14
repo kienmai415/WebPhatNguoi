@@ -105,10 +105,15 @@
             </div>
 
             <!-- Nút gửi phản ánh -->
+            <% if (user != null) { %>
             <div class="text-center">
                 <a href="report.jsp" class="btn btn-primary btn-lg">📸 Gửi phản ánh ngay</a>
             </div>
-
+            <% } else { %>
+            <li class="text-center">
+                <a href="login.jsp" class="btn btn-primary btn-lg">📸 Gửi phản ánh ngay</a>
+            </li>
+            <% } %>
             <!-- Thanh tra cứu phương tiện -->
             <div class="container" style="margin-top: 50px;">
                 <h2>TRA CỨU PHƯƠNG TIỆN VI PHẠM GIAO THÔNG</h2>

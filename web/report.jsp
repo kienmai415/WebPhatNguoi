@@ -44,10 +44,6 @@
                 <% } %>
 
                 <form action="SubmitReportServlet" method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="ReporterID" class="form-label">ID Người Gửi:</label>
-                        <input type="number" class="form-control" id="ReporterID" name="ReporterID" value="${param.ReporterID}" required>
-                    </div>
 
                     <div class="mb-3">
                         <label for="ViolationType" class="form-label">Loại Vi Phạm:</label>
@@ -87,6 +83,8 @@
                         <label for="ReportDate" class="form-label">Ngày Báo Cáo:</label>
                         <input type="date" class="form-control" id="ReportDate" name="ReportDate" required>
                     </div>
+                    
+                    
 
                     <button type="submit" class="btn btn-primary">Gửi Báo Cáo</button>
                 </form>

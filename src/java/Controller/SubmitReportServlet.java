@@ -34,6 +34,7 @@ import java.util.logging.Logger;
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class SubmitReportServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -83,13 +84,12 @@ public class SubmitReportServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-   private static final Logger LOGGER = Logger.getLogger(SubmitReportServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SubmitReportServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         try {
             int reporterID = Integer.parseInt(request.getParameter("ReporterID"));
             String violationType = request.getParameter("ViolationType");
@@ -100,8 +100,8 @@ public class SubmitReportServlet extends HttpServlet {
             int processedBy = 0; // Chưa được xử lý
 
             // Lưu file ảnh và video (nếu có)
-            String imageURL = saveFile(request, "ImageFile");
-            String videoURL = saveFile(request, "VideoFile");
+            String imageURL = saveFile(request, "imageFile");
+            String videoURL = saveFile(request, "videoFile");
 
             // Log dữ liệu nhận được
             LOGGER.log(Level.INFO, "ReporterID: {0}, ViolationType: {1}, ImageURL: {2}, VideoURL: {3}",
@@ -119,7 +119,7 @@ public class SubmitReportServlet extends HttpServlet {
             report.setLocation(location);
             report.setStatus(status);
             report.setProcessedBy(processedBy);
-            
+
             // Lưu vào database
             ReportsDao dao = new ReportsDao();
             if (dao.submitReport(report)) {
@@ -132,11 +132,13 @@ public class SubmitReportServlet extends HttpServlet {
             LOGGER.log(Level.SEVERE, "Lỗi khi gửi báo cáo", e);
         }
         request.getRequestDispatcher("report.jsp").forward(request, response);
+
     }
 
     // Hàm lưu file (ảnh hoặc video)
     private String saveFile(HttpServletRequest request, String inputName) throws IOException, ServletException {
-        String uploadDirectory = "C:/uploads";
+        String uploadDirectory = getServletContext().getRealPath("/") + "uploads";
+
         File uploadDir = new File(uploadDirectory);
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
