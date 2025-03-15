@@ -91,7 +91,7 @@ public class SubmitReportServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            int reporterID = Integer.parseInt(request.getParameter("ReporterID"));
+//            int reporterID = Integer.parseInt(request.getParameter("ReporterID"));
             String violationType = request.getParameter("ViolationType");
             String description = request.getParameter("Description");
             String plateNumber = request.getParameter("PlateNumber");
@@ -105,12 +105,12 @@ public class SubmitReportServlet extends HttpServlet {
 
             // Log dữ liệu nhận được
             LOGGER.log(Level.INFO, "ReporterID: {0}, ViolationType: {1}, ImageURL: {2}, VideoURL: {3}",
-                    new Object[]{reporterID, violationType, imageURL, videoURL});
+                    new Object[]{1, violationType, imageURL, videoURL});
 
             // Tạo đối tượng báo cáo
             Reports report = new Reports();
             Users user = new Users();
-            report.setReporterID(reporterID);
+            report.setReporterID(1);
             report.setViolationType(violationType);
             report.setDescription(description);
             report.setPlateNumber(plateNumber);
