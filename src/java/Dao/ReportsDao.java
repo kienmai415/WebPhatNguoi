@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,33 +21,33 @@ import java.sql.Statement;
  */
 public class ReportsDao {
 
-    public static Reports getReportByUser(int ReporterId) {
-        DBContext db = DBContext.getInstance();
-        String sql = "  SELECT * FROM Reports WHERE ReporterID = ?";
+    public List<Reports> getReportsByUser(int userId) {
+        List<Reports> reportList = new ArrayList<>();
+        String sql = "SELECT * FROM Reports WHERE reporterID = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
 
-        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, ReporterId);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Reports report = new Reports();
-                    report.setReportID(rs.getInt("ReportID"));
-                    report.setReporterID(rs.getInt("ReporterID"));
-                    report.setViolationType(rs.getString("ViolationType"));
-                    report.setDescription(rs.getString("Description"));
-                    report.setPlateNumber(rs.getString("PlateNumber"));
-                    report.setImageURL(rs.getString("ImageURL"));
-                    report.setVideoURL(rs.getString("VideoURL"));
-                    report.setLocation(rs.getString("Location"));
-                    report.setReportDate(rs.getString("ReportDate"));
-                    report.setStatus(rs.getString("Status"));
-                    return report;
-                }
-            }
-        } catch (SQLException e) {
+            while (rs.next()) {
+                Reports report = new Reports();
+                report.setReportID(rs.getInt("ReportID"));
+                report.setReporterID(rs.getInt("ReporterID"));
+                report.setViolationType(rs.getString("ViolationType"));
+                report.setDescription(rs.getString("Description"));
+                report.setPlateNumber(rs.getString("PlateNumber"));
+                report.setLocation(rs.getString("Location"));
+                report.setReportDate(rs.getString("ReportDate"));
+                report.setStatus(rs.getString("Status"));
+                report.setImageURL(rs.getString("ImageURL"));
+                report.setVideoURL(rs.getString("VideoURL"));
+                report.setProcessedBy(rs.getInt("ProcessedBy"));
+                reportList.add(report);
+             }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy user
+        return reportList;
+
     }
     
 
@@ -93,25 +95,27 @@ public class ReportsDao {
     public static void main(String[] args) {
         Reports rp = new Reports();
         ReportsDao rpt = new ReportsDao();
-        Reports rps = ReportsDao.getReportByUser(2);
-        boolean report = rpt.submitReport(rp);
-        rp.setReporterID(3);
-        rp.setViolationType("no_helmet");
-        rp.setDescription("Không đội mũ bảo hiểm");
-        rp.setPlateNumber("30A-12345");
-        rp.setImageURL("uploads/image.jpg");
-        rp.setVideoURL("uploads/video.mp4");
-        rp.setLocation("Hà Nội");
-        rp.setReportDate("2024-03-14");
-        rp.setStatus("Pending");
-        ReportsDao rd = new ReportsDao();
-         boolean result = rd.submitReport(rp);
-        if (result) {
-            System.out.println("✅ Báo cáo được lưu thành công!");
-        } else {
-            System.err.println("❌ Gửi báo cáo thất bại!");
-        }
+        List<Reports> rps = rpt.getReportsByUser(3);
+//        boolean report = rpt.submitReport(rp);
+//        rp.setReporterID(3);
+//        rp.setViolationType("no_helmet");
+//        rp.setDescription("Không đội mũ bảo hiểm");
+//        rp.setPlateNumber("30A-12345");
+//        rp.setImageURL("uploads/image.jpg");
+//        rp.setVideoURL("uploads/video.mp4");
+//        rp.setLocation("Hà Nội");
+//        rp.setReportDate("2024-03-14");
+//        rp.setStatus("Pending");
+//        ReportsDao rd = new ReportsDao();
+//         boolean result = rd.submitReport(rp);
+//        if (result) {
+//            System.out.println("✅ Báo cáo được lưu thành công!");
+//        } else {
+//            System.err.println("❌ Gửi báo cáo thất bại!");
+//        }
         //System.out.println(rps);
-
+        for (Reports rp1 : rps) {
+            System.out.println(rp);
+        }
     }
 }

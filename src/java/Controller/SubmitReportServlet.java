@@ -17,11 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.util.logging.Level;
-import java.sql.Timestamp;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -30,9 +27,9 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "SubmitReportServlet", urlPatterns = {"/SubmitReportServlet"})
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 20, // 20MB
-        maxFileSize = 1024 * 1024 * 100, // 100MB
-        maxRequestSize = 1024 * 1024 * 500 // 500MB
+        fileSizeThreshold = 1024 * 1024 * 20, // 2MB
+        maxFileSize = 1024 * 1024 * 100, // 10MB
+        maxRequestSize = 1024 * 1024 * 500 // 50MB
 )
 public class SubmitReportServlet extends HttpServlet {
 
@@ -87,38 +84,32 @@ public class SubmitReportServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private static final Logger LOGGER = Logger.getLogger(SubmitReportServlet.class.getName());
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedUser") == null) {
-            response.sendRedirect("login.jsp"); // Chuyển hướng về đăng nhập nếu chưa đăng nhập
+            response.sendRedirect("login.jsp");
             return;
         }
-        Users user1 = (Users) session.getAttribute("loggedUser");
-        int reporterID = user1.getUserID();
+
+        Users user = (Users) session.getAttribute("loggedUser");
+        int reporterID = user.getUserID();
+
         try {
-            
-             String violationType = request.getParameter("ViolationType");
+            String violationType = request.getParameter("ViolationType");
             String description = request.getParameter("Description");
             String plateNumber = request.getParameter("PlateNumber");
             String location = request.getParameter("Location");
             String reportDateString = request.getParameter("ReportDate");
-            String status = "Pending"; // Mặc định trạng thái
-            int processedBy = 0; // Chưa được xử lý
+            String status = "Pending";
+            int processedBy = 0;
 
-            // Lưu file ảnh và video (nếu có)
             String imageURL = saveFile(request, "imageFile");
             String videoURL = saveFile(request, "videoFile");
 
-            // Log dữ liệu nhận được
-            LOGGER.log(Level.INFO, "ReporterID: {0}, ViolationType: {1}, ImageURL: {2}, VideoURL: {3}",
-                    new Object[]{reporterID, violationType, imageURL, videoURL});
-
-            // Tạo đối tượng báo cáo
             Reports report = new Reports();
-            Users user = new Users();
             report.setReporterID(reporterID);
             report.setViolationType(violationType);
             report.setDescription(description);
@@ -130,43 +121,48 @@ public class SubmitReportServlet extends HttpServlet {
             report.setProcessedBy(processedBy);
             report.setReportDate(reportDateString);
 
-            // Lưu vào database
             ReportsDao dao = new ReportsDao();
             if (dao.submitReport(report)) {
                 request.setAttribute("messageSuccess", "Báo cáo vi phạm đã được gửi thành công.");
+                request.getRequestDispatcher("report.jsp").forward(request, response);
             } else {
                 request.setAttribute("messageError", "Lỗi khi gửi báo cáo.");
+                request.getRequestDispatcher("report.jsp").forward(request, response);
             }
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Lỗi khi gửi báo cáo: " + e.getMessage(), e);
-
-            // Gửi lỗi chi tiết ra giao diện
-            request.setAttribute("messageError", "Lỗi trong quá trình xử lý: " + e.getClass().getName() + " - " + e.getMessage());
-            e.printStackTrace();
-
-//        request.getRequestDispatcher("report.jsp").forward(request, response);
+            request.setAttribute("messageError", "Lỗi trong quá trình xử lý: " + e.getMessage());
+            request.getRequestDispatcher("report.jsp").forward(request, response);
         }
-        
     }
 
     // Hàm lưu file (ảnh hoặc video)
+    // Hàm lưu file ảnh hoặc video vào thư mục "uploads" trong thư mục gốc của ứng dụng
     private String saveFile(HttpServletRequest request, String inputName) throws IOException, ServletException {
+        // Định nghĩa thư mục lưu trữ file trong thư mục gốc của ứng dụng
         String uploadDirectory = getServletContext().getRealPath("/") + "uploads";
-        
+
         File uploadDir = new File(uploadDirectory);
         if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            uploadDir.mkdir(); // Tạo thư mục nếu chưa tồn tại
         }
-        
+
+        // Lấy file từ request
         Part filePart = request.getPart(inputName);
         if (filePart == null || filePart.getSubmittedFileName().isEmpty()) {
-            return null;
+            return null; // Nếu không có file nào được chọn
         }
-        
+
+        // Lấy tên file gốc
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        // Định nghĩa đường dẫn đích để lưu file
         String filePath = uploadDirectory + File.separator + fileName;
+
+        // Ghi file vào thư mục
         filePart.write(filePath);
-        return filePath;
+
+        // Trả về đường dẫn tương đối thay vì đường dẫn tuyệt đối (quan trọng)
+        return "uploads/" + fileName;
     }
 
     /**

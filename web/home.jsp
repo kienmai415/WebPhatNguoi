@@ -69,19 +69,27 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="history.jsp">📜 Lịch Sử Phản Ánh</a></li>
-                        <li class="nav-item"><a class="nav-link" href="notifications.jsp">🔔 Thông Báo</a></li>
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="viewReportHistory.jsp" style="color: white">📜 Lịch Sử Phản Ánh</a></li>
+                        <li class="nav-item"><a class="nav-link" href="notifications.jsp" style="color: white">🔔 Thông Báo</a></li>
+                            <% if (user != null) { %>
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white">
                             👤 Hồ Sơ
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="profileDropdown" style="margin-left: 1150px">
+
+                        <ul class="dropdown-menu" aria-labelledby="profileDropdown" style="margin-left: 980px ">
                             <li><a class="dropdown-item" href="UpdateProfileServlet">Chỉnh sửa hồ sơ</a></li>
                             <li><a class="dropdown-item" href="changepassword.jsp">🔑 Đổi mật khẩu</a></li>
                         </ul>
+                        <% } else { %>
+
+                        <a class="nav-link" href="login.jsp" style="color: white">
+                            👤 Hồ Sơ
+                        </a>
+                        <% } %>
                         <!-- Kiểm tra đăng nhập -->
                         <% if (user != null) { %>
                         <div style="display: flex; align-items: center;">
-                            <span>Xin chào, ${sessionScope.FullName}!</span>
+                            <span style="color: white">Xin chào, ${sessionScope.FullName}!</span>
 
                             <a class="nav-link btn btn-danger text-white" href="LogoutServlet">🚪 Đăng Xuất</a>
 
