@@ -60,11 +60,7 @@ public class Home extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        HttpSession session = request.getSession();
-        Users user = (Users) session.getAttribute("loggedUser");
-        int userId = user.getUserID();
-         session.setAttribute("userId", userId);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+       response.sendRedirect("home.jsp");
     }
 
     /**
@@ -78,11 +74,7 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Users user = (Users) session.getAttribute("loggedUser");
-        int userId = user.getUserID();
-        session.setAttribute("userId", userId);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+       
     }
 
     /**

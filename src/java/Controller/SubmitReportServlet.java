@@ -99,18 +99,8 @@ public class SubmitReportServlet extends HttpServlet {
         Users user1 = (Users) session.getAttribute("loggedUser");
         int reporterID = user1.getUserID();
         try {
-            HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
-            if (session == null || session.getAttribute("loggedUser") == null) {
-                LOGGER.log(Level.SEVERE, "❌ Lỗi: Session không tồn tại hoặc không có loggedUser!");
-                response.sendRedirect("login.jsp");
-                return;
-            }
-
-            Users users = (Users) session.getAttribute("loggedUser");
-            LOGGER.log(Level.INFO, "✅ Lấy User từ session - ID: {0}, Role: {1}", new Object[]{users.getUserID(), users.getRoleID()});
-            int reporterID = users.getUserID();
-
-            String violationType = request.getParameter("ViolationType");
+            
+             String violationType = request.getParameter("ViolationType");
             String description = request.getParameter("Description");
             String plateNumber = request.getParameter("PlateNumber");
             String location = request.getParameter("Location");
@@ -124,8 +114,12 @@ public class SubmitReportServlet extends HttpServlet {
 
             // Log dữ liệu nhận được
             LOGGER.log(Level.INFO, "ReporterID: {0}, ViolationType: {1}, ImageURL: {2}, VideoURL: {3}",
-                    new Object[]{3, violationType, imageURL, videoURL});
+                    new Object[]{reporterID, violationType, imageURL, videoURL});
+
             // Tạo đối tượng báo cáo
+            Reports report = new Reports();
+            Users user = new Users();
+            report.setReporterID(reporterID);
             report.setViolationType(violationType);
             report.setDescription(description);
             report.setPlateNumber(plateNumber);
