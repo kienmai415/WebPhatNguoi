@@ -5,6 +5,8 @@
 package Dao;
 
 import Model.Reports;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,6 +47,9 @@ public class ReportsDao {
         }
         return null; // Trả về null nếu không tìm thấy user
     }
+    
+
+    private static final Logger LOGGER = Logger.getLogger(ReportsDao.class.getName());
 
     private Connection conn;
 
@@ -57,6 +62,8 @@ public class ReportsDao {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            LOGGER.log(Level.INFO, "📝 Chuẩn bị thêm báo cáo - ReporterID: {0}, ViolationType: {1}, PlateNumber: {2}", 
+                new Object[]{report.getReporterID(), report.getViolationType(), report.getPlateNumber()});
             ps.setInt(1, report.getReporterID());
             ps.setString(2, report.getViolationType());
             ps.setString(3, report.getDescription());
@@ -67,13 +74,19 @@ public class ReportsDao {
             ps.setString(8, report.getReportDate());
             ps.setString(9, report.getStatus());
 
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Lỗi SQL khi insert: " + e.getMessage());
+            int result = ps.executeUpdate();
+            // Kiểm tra kết quả
+        if (result > 0) {
+            LOGGER.log(Level.INFO, "✅ Báo cáo đã được thêm vào DB! Rows affected: {0}", result);
+            return true;
+        } else {
+            LOGGER.log(Level.WARNING, "⚠ Không có hàng nào được chèn vào database.");
             return false;
         }
+    } catch (SQLException e) {
+        LOGGER.log(Level.SEVERE, "❌ Lỗi SQL khi thêm báo cáo vào DB", e);
+        return false;
+    }
 
     }
 

@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.logging.Level;
@@ -29,9 +30,9 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "SubmitReportServlet", urlPatterns = {"/SubmitReportServlet"})
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50 // 50MB
+        fileSizeThreshold = 1024 * 1024 * 20, // 20MB
+        maxFileSize = 1024 * 1024 * 100, // 100MB
+        maxRequestSize = 1024 * 1024 * 500 // 500MB
 )
 public class SubmitReportServlet extends HttpServlet {
 
@@ -91,7 +92,17 @@ public class SubmitReportServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-//            int reporterID = Integer.parseInt(request.getParameter("ReporterID"));
+            HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
+            if (session == null || session.getAttribute("loggedUser") == null) {
+                LOGGER.log(Level.SEVERE, "❌ Lỗi: Session không tồn tại hoặc không có loggedUser!");
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            Users users = (Users) session.getAttribute("loggedUser");
+            LOGGER.log(Level.INFO, "✅ Lấy User từ session - ID: {0}, Role: {1}", new Object[]{users.getUserID(), users.getRoleID()});
+            int reporterID = users.getUserID();
+
             String violationType = request.getParameter("ViolationType");
             String description = request.getParameter("Description");
             String plateNumber = request.getParameter("PlateNumber");
@@ -105,12 +116,12 @@ public class SubmitReportServlet extends HttpServlet {
 
             // Log dữ liệu nhận được
             LOGGER.log(Level.INFO, "ReporterID: {0}, ViolationType: {1}, ImageURL: {2}, VideoURL: {3}",
-                    new Object[]{1, violationType, imageURL, videoURL});
+                    new Object[]{3, violationType, imageURL, videoURL});
 
             // Tạo đối tượng báo cáo
             Reports report = new Reports();
             Users user = new Users();
-            report.setReporterID(1);
+            report.setReporterID(reporterID);
             report.setViolationType(violationType);
             report.setDescription(description);
             report.setPlateNumber(plateNumber);

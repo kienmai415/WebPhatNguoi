@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -78,6 +80,8 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private static final Logger LOGGER = Logger.getLogger(LoginServlet.class.getName());
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -116,7 +120,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("loggedUser", user);
             session.setAttribute("FullName", user.getFullName());
             session.setAttribute("role", user.getRoleID()); // userRole phải là "police" nếu là cảnh sát
-            
+            LOGGER.log(Level.INFO, "✅ Đăng nhập thành công: ID = {0}, Role = {1}", 
+               new Object[]{user.getUserID(), user.getRoleID()});
             if (user.getRoleID() == 1) {
                 response.sendRedirect("admin.jsp");
             } else if (user.getRoleID() == 2) {
@@ -128,7 +133,8 @@ public class LoginServlet extends HttpServlet {
 //            response.sendRedirect("home.jsp");
         } else {
             // Đăng nhập thất bại -> Hiển thị lỗi
-            request.setAttribute("error", "❌ Sai tài khoản hoặc mật khẩu!");
+            LOGGER.log(Level.SEVERE, "❌ Sai email hoặc mật khẩu!");
+            //request.setAttribute("error", "❌ Sai tài khoản hoặc mật khẩu!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
