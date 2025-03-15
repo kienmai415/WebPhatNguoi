@@ -74,7 +74,8 @@ public class SubmitReportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("report.jsp");
+//        request.getRequestDispatcher("report.jsp").forward(request, response);
     }
 
     /**
@@ -86,11 +87,17 @@ public class SubmitReportServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private static final Logger LOGGER = Logger.getLogger(SubmitReportServlet.class.getName());
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loggedUser") == null) {
+            response.sendRedirect("login.jsp"); // Chuyển hướng về đăng nhập nếu chưa đăng nhập
+            return;
+        }
+        Users user1 = (Users) session.getAttribute("loggedUser");
+        int reporterID = user1.getUserID();
         try {
             HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
             if (session == null || session.getAttribute("loggedUser") == null) {
@@ -107,6 +114,7 @@ public class SubmitReportServlet extends HttpServlet {
             String description = request.getParameter("Description");
             String plateNumber = request.getParameter("PlateNumber");
             String location = request.getParameter("Location");
+            String reportDateString = request.getParameter("ReportDate");
             String status = "Pending"; // Mặc định trạng thái
             int processedBy = 0; // Chưa được xử lý
 
@@ -117,11 +125,7 @@ public class SubmitReportServlet extends HttpServlet {
             // Log dữ liệu nhận được
             LOGGER.log(Level.INFO, "ReporterID: {0}, ViolationType: {1}, ImageURL: {2}, VideoURL: {3}",
                     new Object[]{3, violationType, imageURL, videoURL});
-
             // Tạo đối tượng báo cáo
-            Reports report = new Reports();
-            Users user = new Users();
-            report.setReporterID(reporterID);
             report.setViolationType(violationType);
             report.setDescription(description);
             report.setPlateNumber(plateNumber);
@@ -130,6 +134,7 @@ public class SubmitReportServlet extends HttpServlet {
             report.setLocation(location);
             report.setStatus(status);
             report.setProcessedBy(processedBy);
+            report.setReportDate(reportDateString);
 
             // Lưu vào database
             ReportsDao dao = new ReportsDao();
@@ -139,27 +144,31 @@ public class SubmitReportServlet extends HttpServlet {
                 request.setAttribute("messageError", "Lỗi khi gửi báo cáo.");
             }
         } catch (Exception e) {
-            request.setAttribute("messageError", "Lỗi xử lý dữ liệu: " + e.getMessage());
-            LOGGER.log(Level.SEVERE, "Lỗi khi gửi báo cáo", e);
-        }
-        request.getRequestDispatcher("report.jsp").forward(request, response);
+            LOGGER.log(Level.SEVERE, "Lỗi khi gửi báo cáo: " + e.getMessage(), e);
 
+            // Gửi lỗi chi tiết ra giao diện
+            request.setAttribute("messageError", "Lỗi trong quá trình xử lý: " + e.getClass().getName() + " - " + e.getMessage());
+            e.printStackTrace();
+
+//        request.getRequestDispatcher("report.jsp").forward(request, response);
+        }
+        
     }
 
     // Hàm lưu file (ảnh hoặc video)
     private String saveFile(HttpServletRequest request, String inputName) throws IOException, ServletException {
         String uploadDirectory = getServletContext().getRealPath("/") + "uploads";
-
+        
         File uploadDir = new File(uploadDirectory);
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
         }
-
+        
         Part filePart = request.getPart(inputName);
         if (filePart == null || filePart.getSubmittedFileName().isEmpty()) {
             return null;
         }
-
+        
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         String filePath = uploadDirectory + File.separator + fileName;
         filePart.write(filePath);

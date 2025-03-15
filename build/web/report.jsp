@@ -1,9 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="Model.Reports" %>
+<%@ page import="Model.Users" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 
 <% String messageSuccess = (String) request.getAttribute("messageSuccess"); %>
+<%
+    Users user = (Users) session.getAttribute("loggedUser"); 
+%>
 <% String messageError = (String) request.getAttribute("messageError"); %>
+<%
+    out.println("User in session: " + session.getAttribute("loggedUser"));
+%>
 
 <!DOCTYPE html>
 <html>
@@ -44,7 +51,7 @@
                 <% } %>
 
                 <form action="SubmitReportServlet" method="post" enctype="multipart/form-data">
-
+                    
                     <div class="mb-3">
                         <label for="ViolationType" class="form-label">Loại Vi Phạm:</label>
                         <select class="form-select" id="ViolationType" name="ViolationType">
@@ -83,8 +90,8 @@
                         <label for="ReportDate" class="form-label">Ngày Báo Cáo:</label>
                         <input type="date" class="form-control" id="ReportDate" name="ReportDate" required>
                     </div>
-                    
-                    
+
+
 
                     <button type="submit" class="btn btn-primary">Gửi Báo Cáo</button>
                 </form>
