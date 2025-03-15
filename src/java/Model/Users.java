@@ -85,5 +85,11 @@ public class Users {
     public void setAddress(String Address) {
         this.Address = Address;
     }
+
+    @Override
+    public String toString() {
+        return "Users{" + "UserID=" + UserID + ", FullName=" + FullName + ", Email=" + Email + ", Password=" + Password + ", RoleID=" + RoleID + ", Phone=" + Phone + ", Address=" + Address + '}';
+    }
+
     
 }

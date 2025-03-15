@@ -113,15 +113,17 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             // Đăng nhập thành công -> Lưu vào session
             HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
             session.setAttribute("FullName", user.getFullName());
             session.setAttribute("role", user.getRoleID()); // userRole phải là "police" nếu là cảnh sát
-            
+            session.setAttribute("userId", user.getUserID());
             if (user.getRoleID() == 1) {
+                session.setAttribute("loggedUser", user);
                 response.sendRedirect("admin.jsp");
             } else if (user.getRoleID() == 2) {
+                session.setAttribute("loggedUser", user);
                 response.sendRedirect("police.jsp");
             } else {
+                session.setAttribute("loggedUser", user);
                 response.sendRedirect("home.jsp");
             }
             // Điều hướng về trang home.jsp
@@ -142,5 +144,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

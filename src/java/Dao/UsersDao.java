@@ -50,12 +50,14 @@ public class UsersDao {
             ResultSet rs = statment.executeQuery(); //(5)
             while (rs.next()) {
                 user = new Users();
+                user.setUserID(rs.getInt("UserID"));
+                user.setAddress(rs.getString("Address"));
                 user.setRoleID(rs.getInt("RoleID"));
                 user.setEmail(rs.getString("Email"));
+                user.setPhone(rs.getString("Phone"));
                 user.setPassword(rs.getString("Password"));
                 user.setFullName(rs.getString("FullName"));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
