@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.io.*, javax.servlet.*, javax.servlet.http.*" %>
-<%@ page import="Model.Reports" %>
-<%@ page import="Dao.ReportsDao" %> 
+<%@ page import="Model.*" %>
+<%@ page import="Dao.*" %> 
 <%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
@@ -110,15 +110,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (reportList == null || reportList.isEmpty()) { %>
+                    <% if (reportList == null || reportList.isEmpty()) {
+                     
+                    
+                    %>
                     <tr>
                         <td colspan="11" class="text-center">Không có phản ánh nào.</td>
                     </tr>
                     <% } else { 
-                    for (Reports report : reportList) { %>
+                    for (Reports report : reportList) { 
+                     UsersDao dao = new UsersDao();
+               Users user = dao.getUserByUserId(report.getReporterID());
+                    %>
                     <tr>
                         <td><%= report.getReportID() %></td>
-                        <td><%= report.getReporterID() %></td>
+                        <td><%= user.getFullName() + " - " + user.getEmail() %></td>
                         <td><%= report.getReportDate() %></td>
                         <td><%= report.getPlateNumber() %></td>
                         <td><%= report.getViolationType() %></td>

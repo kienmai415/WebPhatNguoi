@@ -120,7 +120,30 @@ public class UsersDao {
         }
         return null; // Trả về null nếu không tìm thấy user
     }
+    
+    public static Users getUserByUserId(int userID) {
+        DBContext db = DBContext.getInstance();
+        String sql = "SELECT * FROM Users WHERE UserID = ?";
 
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Users user = new Users();
+                user.setEmail(rs.getString("Email"));
+                user.setFullName(rs.getString("FullName"));
+                user.setPhone(rs.getString("Phone"));
+                user.setAddress(rs.getString("Address"));
+                user.setPassword(rs.getString("Password"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy user
+    }
+    
     public static void main(String[] args) {
         Users user = new Users();
         Users users = UsersDao.getUserByEmail("NguyenVanG@gmail.com");

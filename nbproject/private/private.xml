@@ -6,6 +6,7 @@
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/police.jsp</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Vehicles.java</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/history.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/DBContext.java</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/changepassword.jsp</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Users.java</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/nbproject/build-impl.xml</file>
@@ -35,6 +36,7 @@
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Violations.java</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/notifications.jsp</file>
             <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Reports.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/ViolationsDao.java</file>
         </group>
     </open-files>
 </project-private>

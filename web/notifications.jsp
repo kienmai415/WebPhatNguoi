@@ -19,6 +19,9 @@
     // Lấy danh sách phản ánh từ database theo UserID
     ReportsDao reportsDao = new ReportsDao();
     List<Reports> reportList = reportsDao.getReportsByUser(userId);
+
+    // Lấy giá trị bộ lọc trạng thái (mặc định là tất cả)
+    String filterStatus = request.getParameter("status");
 %>
 
 <!DOCTYPE html>
@@ -33,6 +36,17 @@
     <div class="container mt-4">
         <h2 class="text-center text-primary">🔔 Thông Báo Tình Trạng Đơn Phản Ánh</h2>
 
+        <!-- Bộ lọc trạng thái -->
+        <form action="notifications.jsp" method="get" class="mb-3">
+            <label for="statusFilter" class="form-label">🔍 Lọc theo trạng thái:</label>
+            <select id="statusFilter" name="status" class="form-select" onchange="this.form.submit()">
+                <option value="" <%= (filterStatus == null || filterStatus.isEmpty()) ? "selected" : "" %>>📌 Tất Cả</option>
+                <option value="Pending" <%= "Pending".equals(filterStatus) ? "selected" : "" %>>⏳ Đang Xử Lý</option>
+                <option value="Approved" <%= "Approved".equals(filterStatus) ? "selected" : "" %>>✅ Đã Chấp Nhận</option>
+                <option value="Rejected" <%= "Rejected".equals(filterStatus) ? "selected" : "" %>>❌ Bị Từ Chối</option>
+            </select>
+        </form>
+
         <table class="table table-bordered mt-4">
             <thead class="table-dark">
                 <tr>
@@ -41,36 +55,42 @@
                     <th>Biển Số Xe</th>
                     <th>Loại Vi Phạm</th>
                     <th>Trạng Thái</th>
-                    <th>Chi Tiết</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                <% if (reportList.isEmpty()) { %>
-                    <tr>
-                        <td colspan="6" class="text-center">Không có thông báo nào.</td>
-                    </tr>
-                <% } else { 
-                    for (Reports report : reportList) { %>
-                        <tr>
-                            <td><%= report.getReportID() %></td>
-                            <td><%= report.getReportDate() %></td>
-                            <td><%= report.getPlateNumber() %></td>
-                            <td><%= report.getViolationType() %></td>
-                            <td>
-                                <% if ("Approved".equals(report.getStatus())) { %>
-                                    <span class="badge bg-success">✅ Đã Chấp Nhận</span>
-                                <% } else if ("Rejected".equals(report.getStatus())) { %>
-                                    <span class="badge bg-danger">❌ Bị Từ Chối</span>
-                                <% } else { %>
-                                    <span class="badge bg-warning">⏳ Đang Xử Lý</span>
-                                <% } %>
-                            </td>
-                            <td>
-                                <a href="viewReport.jsp?reportId=<%= report.getReportID() %>" class="btn btn-info btn-sm">📄 Xem Chi Tiết</a>
-                            </td>
-                        </tr>
-                    <% } 
-                } %>
+                <% 
+                    boolean hasReport = false;
+                    for (Reports report : reportList) { 
+                        // Nếu có bộ lọc trạng thái, chỉ hiển thị những phản ánh khớp với trạng thái đã chọn
+                        if (filterStatus != null && !filterStatus.isEmpty() && !filterStatus.equals(report.getStatus())) {
+                            continue;
+                        }
+                        hasReport = true;
+                %>
+                <tr>
+                    <td><%= report.getReportID() %></td>
+                    <td><%= report.getReportDate() %></td>
+                    <td><%= report.getPlateNumber() %></td>
+                    <td><%= report.getViolationType() %></td>
+                    <td>
+                        <% if ("Approved".equals(report.getStatus())) { %>
+                            <span class="badge bg-success">✅ Đã Chấp Nhận</span>
+                        <% } else if ("Rejected".equals(report.getStatus())) { %>
+                            <span class="badge bg-danger">❌ Bị Từ Chối</span>
+                        <% } else { %>
+                            <span class="badge bg-warning">⏳ Đang Xử Lý</span>
+                        <% } %>
+                    </td>
+                    
+                </tr>
+                <% } %>
+
+                <% if (!hasReport) { %>
+                <tr>
+                    <td colspan="6" class="text-center">Không có thông báo nào.</td>
+                </tr>
+                <% } %>
             </tbody>
         </table>
 
