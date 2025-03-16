@@ -27,9 +27,9 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "SubmitReportServlet", urlPatterns = {"/SubmitReportServlet"})
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 20, // 2MB
-        maxFileSize = 1024 * 1024 * 100, // 10MB
-        maxRequestSize = 1024 * 1024 * 500 // 50MB
+        fileSizeThreshold = 1024 * 1024 * 20, // 20MB
+        maxFileSize = 1024 * 1024 * 100, // 100MB
+        maxRequestSize = 1024 * 1024 * 500 // 500MB
 )
 public class SubmitReportServlet extends HttpServlet {
 
@@ -138,37 +138,41 @@ public class SubmitReportServlet extends HttpServlet {
     // Hàm lưu file (ảnh hoặc video)
     // Hàm lưu file ảnh hoặc video vào thư mục "uploads" trong thư mục gốc của ứng dụng
     private String saveFile(HttpServletRequest request, String inputName) throws IOException, ServletException {
-        // Định nghĩa thư mục lưu trữ file trong thư mục gốc của ứng dụng
-        String uploadDirectory = request.getServletContext().getRealPath("") + File.separator + "uploads";
+        // Định nghĩa thư mục lưu trữ file trong thư mục gốc của ứng dụng (web/uploads/)
+        String uploadDirectory = getServletContext().getRealPath("") + "uploads";
 
-
+        // Kiểm tra và tạo thư mục nếu chưa tồn tại
         File uploadDir = new File(uploadDirectory);
         if (!uploadDir.exists()) {
-            uploadDir.mkdir(); // Tạo thư mục nếu chưa tồn tại
+            uploadDir.mkdir();
         }
 
         // Lấy file từ request
         Part filePart = request.getPart(inputName);
         if (filePart == null || filePart.getSubmittedFileName().isEmpty()) {
-            return null; // Nếu không có file nào được chọn
+            return null; // Không có file nào được chọn
         }
 
-        // Lấy tên file gốc
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+        // Lấy tên file gốc và phần mở rộng
+        String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
 
-        // Kiểm tra định dạng hợp lệ
-//        if (!fileExtension.matches("\\.(jpg|png|mp4|avi|jfif)$")) {
-//            return ""; // Không lưu nếu file không hợp lệ
-//        }
+        // Chỉ cho phép các định dạng hợp lệ
+        if (!fileExtension.matches("\\.(jpg|png|mp4|avi|jfif|jpeg)$")) {
+            return null; // File không hợp lệ
+        }
+
+        // Tạo tên file duy nhất (timestamp + random)
+        String uniqueFileName = System.currentTimeMillis() + "_" + Math.random() * 1000 + fileExtension;
+
         // Định nghĩa đường dẫn đích để lưu file
-        String filePath = uploadDirectory + File.separator + fileName;
+        String filePath = uploadDirectory + File.separator + uniqueFileName;
 
-        // Ghi file vào thư mục
+        // Lưu file vào thư mục
         filePart.write(filePath);
 
-        // Trả về đường dẫn tương đối thay vì đường dẫn tuyệt đối (quan trọng)
-        return "uploads/" + fileName;
+        // Trả về đường dẫn tương đối (dùng để lưu vào database)
+        return "uploads/" + uniqueFileName;
     }
 
     /**

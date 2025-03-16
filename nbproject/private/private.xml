@@ -2,6 +2,39 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/police.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Vehicles.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/history.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/changepassword.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Users.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/UsersDao.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/admin.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/LogoutServlet.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/ReportsDao.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/LoginServlet.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/ChangePasswordServlet.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/SubmitReportServlet.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/NotificationsDao.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/register.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/RolesDao.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/report.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/viewReportHistory.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/SearchVehicleServlet.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Notifications.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/updateprofile.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/home.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/reportuser.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/UpdateReportStatusServlet.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/GetReportByUserID.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Dao/VehiclesDao.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/login.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Controller/Home.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Violations.java</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/web/notifications.jsp</file>
+            <file>file:/C:/Users/maiki/Downloads/project/WebPhatNguoi/src/java/Model/Reports.java</file>
+        </group>
     </open-files>
 </project-private>

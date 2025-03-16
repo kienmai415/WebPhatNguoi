@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -34,12 +34,12 @@ public class ReportsDao {
                 report.setReporterID(rs.getInt("ReporterID"));
                 report.setViolationType(rs.getString("ViolationType"));
                 report.setDescription(rs.getString("Description"));
+                report.setImageURL(rs.getString("ImageURL"));
+                report.setVideoURL(rs.getString("VideoURL"));
                 report.setPlateNumber(rs.getString("PlateNumber"));
                 report.setLocation(rs.getString("Location"));
                 report.setReportDate(rs.getString("ReportDate"));
                 report.setStatus(rs.getString("Status"));
-                report.setImageURL(rs.getString("ImageURL"));
-                report.setVideoURL(rs.getString("VideoURL"));
                 report.setProcessedBy(rs.getInt("ProcessedBy"));
                 reportList.add(report);
              }
@@ -119,17 +119,42 @@ public class ReportsDao {
 }
         public boolean updateReportStatus(int reportId, String newStatus) {
     DBContext db = DBContext.getInstance();
-    String sql = "UPDATE Reports SET Status = ? WHERE ReportID = ? AND Status = 'Pending'";
+    String updateSql = "UPDATE Reports SET Status = ? WHERE ReportID = ? AND Status = 'Pending'";
+    String getUserSql = "SELECT ReporterID FROM Reports WHERE ReportID = ?";
+    String insertNotificationSql = "INSERT INTO Notifications (UserID, ReportID, Message, Status) VALUES (?, ?, ?, 'unread')";
 
-    try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
-        stmt.setString(1, newStatus);
-        stmt.setInt(2, reportId);
-        return stmt.executeUpdate() > 0;
+    try (PreparedStatement updateStmt = db.getConnection().prepareStatement(updateSql);
+         PreparedStatement getUserStmt = db.getConnection().prepareStatement(getUserSql);
+         PreparedStatement insertStmt = db.getConnection().prepareStatement(insertNotificationSql)) {
+        
+        // Cập nhật trạng thái phản ánh
+        updateStmt.setString(1, newStatus);
+        updateStmt.setInt(2, reportId);
+        int rowsUpdated = updateStmt.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            // Lấy thông tin người báo cáo
+            getUserStmt.setInt(1, reportId);
+            ResultSet rs = getUserStmt.executeQuery();
+            if (rs.next()) {
+                int userID = rs.getInt("ReporterID");
+                String message = "Phản ánh của bạn đã được " + 
+                                 (newStatus.equals("Accepted") ? "chấp nhận." : "từ chối.");
+                
+                // Thêm thông báo vào bảng Notifications
+                insertStmt.setInt(1, userID);
+                insertStmt.setInt(2, reportId);
+                insertStmt.setString(3, message);
+                insertStmt.executeUpdate();
+            }
+            return true;
+        }
     } catch (SQLException e) {
         e.printStackTrace();
-        return false;
     }
+    return false;
 }
+
 
 
     public static void main(String[] args) {

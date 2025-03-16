@@ -127,8 +127,10 @@
 
                         <td>
                             <% if (report.getImageURL() != null && !report.getImageURL().isEmpty()) { %>
-                            <p>🔗 <%= report.getImageURL() %></p>
-                            <a href="<%= report.getImageURL() %>" target="_blank" class="btn btn-outline-primary btn-sm">🔍 Xem Ảnh</a>
+                            <% String imageUrl = "http://localhost:8080/WebPhatNguoi/" + report.getImageURL(); %>
+                            <a href="<%= imageUrl %>" target="_blank" class="btn btn-primary btn-sm">
+                                🔍 Xem Ảnh
+                            </a>
                             <% } else { %>
                             Không có ảnh
                             <% } %>
@@ -136,8 +138,10 @@
 
                         <td>
                             <% if (report.getVideoURL() != null && !report.getVideoURL().isEmpty()) { %>
-                            <p>🔗 <%= report.getVideoURL() %></p>
-                            <a href="<%= report.getVideoURL() %>" target="_blank" class="btn btn-outline-danger btn-sm">🎥 Xem Video</a>
+                            <% String videoUrl = "http://localhost:8080/WebPhatNguoi/" + report.getVideoURL(); %>
+                            <a href="<%= videoUrl %>" target="_blank" class="btn btn-danger btn-sm">
+                                🎥 Xem Video
+                            </a>
                             <% } else { %>
                             Không có video
                             <% } %>
