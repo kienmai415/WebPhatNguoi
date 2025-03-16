@@ -139,7 +139,8 @@ public class SubmitReportServlet extends HttpServlet {
     // Hàm lưu file ảnh hoặc video vào thư mục "uploads" trong thư mục gốc của ứng dụng
     private String saveFile(HttpServletRequest request, String inputName) throws IOException, ServletException {
         // Định nghĩa thư mục lưu trữ file trong thư mục gốc của ứng dụng
-        String uploadDirectory = getServletContext().getRealPath("/") + "uploads";
+        String uploadDirectory = request.getServletContext().getRealPath("") + File.separator + "uploads";
+
 
         File uploadDir = new File(uploadDirectory);
         if (!uploadDir.exists()) {
@@ -154,7 +155,12 @@ public class SubmitReportServlet extends HttpServlet {
 
         // Lấy tên file gốc
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
 
+        // Kiểm tra định dạng hợp lệ
+//        if (!fileExtension.matches("\\.(jpg|png|mp4|avi|jfif)$")) {
+//            return ""; // Không lưu nếu file không hợp lệ
+//        }
         // Định nghĩa đường dẫn đích để lưu file
         String filePath = uploadDirectory + File.separator + fileName;
 

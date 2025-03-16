@@ -91,11 +91,51 @@ public class ReportsDao {
     }
 
     }
+    public List<Reports> getReportsByStatus(String status) {
+    List<Reports> reportsList = new ArrayList<>();
+    DBContext db = DBContext.getInstance();
+    String sql = "SELECT * FROM Reports WHERE Status = ? ORDER BY ReportDate DESC";
+
+    try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+        stmt.setString(1, status);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Reports report = new Reports();
+                report.setReportID(rs.getInt("ReportID"));
+                report.setReporterID(rs.getInt("ReporterID"));
+                report.setViolationType(rs.getString("ViolationType"));
+                report.setDescription(rs.getString("Description"));
+                report.setPlateNumber(rs.getString("PlateNumber"));
+                report.setLocation(rs.getString("Location"));
+                report.setReportDate(rs.getString("ReportDate"));
+                report.setStatus(rs.getString("Status"));
+                reportsList.add(report);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return reportsList;
+}
+        public boolean updateReportStatus(int reportId, String newStatus) {
+    DBContext db = DBContext.getInstance();
+    String sql = "UPDATE Reports SET Status = ? WHERE ReportID = ? AND Status = 'Pending'";
+
+    try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+        stmt.setString(1, newStatus);
+        stmt.setInt(2, reportId);
+        return stmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
 
     public static void main(String[] args) {
         Reports rp = new Reports();
         ReportsDao rpt = new ReportsDao();
-        List<Reports> rps = rpt.getReportsByUser(3);
+        List<Reports> rps = rpt.getReportsByStatus("Approved");
 //        boolean report = rpt.submitReport(rp);
 //        rp.setReporterID(3);
 //        rp.setViolationType("no_helmet");
