@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -78,6 +80,8 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private static final Logger LOGGER = Logger.getLogger(LoginServlet.class.getName());
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -113,19 +117,25 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             // Đăng nhập thành công -> Lưu vào session
             HttpSession session = request.getSession();
-            session.setAttribute("loggedUser", user);
+            session.setAttribute("FullName", user.getFullName());
+            session.setAttribute("role", user.getRoleID()); // userRole phải là "police" nếu là cảnh sát
+            session.setAttribute("userId", user.getUserID());
             if (user.getRoleID() == 1) {
-                response.sendRedirect("dashboard/admin.jsp");
+                session.setAttribute("loggedUser", user);
+                response.sendRedirect("admin.jsp");
             } else if (user.getRoleID() == 2) {
-                response.sendRedirect("dashboard/police.jsp");
+                session.setAttribute("loggedUser", user);
+                response.sendRedirect("police.jsp");
             } else {
+                session.setAttribute("loggedUser", user);
                 response.sendRedirect("home.jsp");
             }
             // Điều hướng về trang home.jsp
 //            response.sendRedirect("home.jsp");
         } else {
             // Đăng nhập thất bại -> Hiển thị lỗi
-            request.setAttribute("error", "❌ Sai tài khoản hoặc mật khẩu!");
+            LOGGER.log(Level.SEVERE, "❌ Sai email hoặc mật khẩu!");
+            //request.setAttribute("error", "❌ Sai tài khoản hoặc mật khẩu!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
@@ -139,5 +149,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

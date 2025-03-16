@@ -126,6 +126,11 @@ public class Reports {
         this.ViolationType = ViolationType;
     }
 
+    @Override
+    public String toString() {
+        return "Reports{" + "ReportID=" + ReportID + ", ReporterID=" + ReporterID + ", ViolationType=" + ViolationType + ", Description=" + Description + ", PlateNumber=" + PlateNumber + ", ImageURL=" + ImageURL + ", VideoURL=" + VideoURL + ", Location=" + Location + ", ReportDate=" + ReportDate + ", Status=" + Status + ", ProcessedBy=" + ProcessedBy + '}';
+    }
+
     
 
     
