@@ -125,6 +125,7 @@
                         <td><%= report.getDescription() %></td>
                         <td><%= report.getLocation() %></td>
 
+
                         <td>
                             <% if (report.getImageURL() != null && !report.getImageURL().isEmpty()) { %>
                             <% String imageUrl = "http://localhost:8080/WebPhatNguoi/" + report.getImageURL(); %>
@@ -146,6 +147,7 @@
                             Không có video
                             <% } %>
                         </td>
+
 
 
                         <td>

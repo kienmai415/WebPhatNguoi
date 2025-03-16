@@ -19,6 +19,9 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -134,6 +137,9 @@ public class SubmitReportServlet extends HttpServlet {
             request.getRequestDispatcher("report.jsp").forward(request, response);
         }
     }
+   private String saveFile(HttpServletRequest request, String inputName) throws IOException, ServletException {
+    // Định nghĩa thư mục lưu trữ file trong thư mục gốc của ứng dụng (web/uploads/)
+    String uploadDirectory = getServletContext().getRealPath("") + "uploads";
 
     // Hàm lưu file (ảnh hoặc video)
     // Hàm lưu file ảnh hoặc video vào thư mục "uploads" trong thư mục gốc của ứng dụng
@@ -174,6 +180,35 @@ public class SubmitReportServlet extends HttpServlet {
         // Trả về đường dẫn tương đối (dùng để lưu vào database)
         return "uploads/" + uniqueFileName;
     }
+
+    // Lấy file từ request
+    Part filePart = request.getPart(inputName);
+    if (filePart == null || filePart.getSubmittedFileName().isEmpty()) {
+        return null; // Không có file nào được chọn
+    }
+
+    // Lấy tên file gốc và phần mở rộng
+    String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+
+    // Chỉ cho phép các định dạng hợp lệ
+    if (!fileExtension.matches("\\.(jpg|png|mp4|avi|jfif|jpeg)$")) {
+        return null; // File không hợp lệ
+    }
+
+    // Tạo tên file duy nhất (timestamp + random)
+    String uniqueFileName = System.currentTimeMillis() + "_" + Math.random() * 1000 + fileExtension;
+
+    // Định nghĩa đường dẫn đích để lưu file
+    String filePath = uploadDirectory + File.separator + uniqueFileName;
+
+    // Lưu file vào thư mục
+    filePart.write(filePath);
+
+    // Trả về đường dẫn tương đối (dùng để lưu vào database)
+    return "uploads/" + uniqueFileName;
+}
+
 
     /**
      * Returns a short description of the servlet.

@@ -106,6 +106,8 @@ public class ReportsDao {
                 report.setViolationType(rs.getString("ViolationType"));
                 report.setDescription(rs.getString("Description"));
                 report.setPlateNumber(rs.getString("PlateNumber"));
+                report.setImageURL(rs.getString("ImageURL"));
+                report.setVideoURL(rs.getString("VideoURL"));
                 report.setLocation(rs.getString("Location"));
                 report.setReportDate(rs.getString("ReportDate"));
                 report.setStatus(rs.getString("Status"));

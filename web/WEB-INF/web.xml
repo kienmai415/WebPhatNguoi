@@ -9,12 +9,8 @@
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
     <session-config>
-    <session-timeout>60</session-timeout> <!-- 60 phút -->
-</session-config>
-<servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/uploads/*</url-pattern>
-</servlet-mapping>
-
-
+        <session-timeout>60</session-timeout>
+        <!-- 60 phút -->
+    </session-config>
+  
 </web-app>
