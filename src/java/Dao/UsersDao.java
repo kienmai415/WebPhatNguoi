@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -43,7 +44,7 @@ public class UsersDao {
         DBContext db = DBContext.getInstance();
         Users user = null;
         try {
-            String sql = "select * from Users where Email = ? and Password = ?"; //(2)
+            String sql = "select * from Users where Email = ? and Password = ? AND isActive = 1"; //(2)
             PreparedStatement statment = db.getConnection().prepareStatement(sql); //(3)
             statment.setString(1, email);
             statment.setString(2, password);
@@ -57,6 +58,7 @@ public class UsersDao {
                 user.setPhone(rs.getString("Phone"));
                 user.setPassword(rs.getString("Password"));
                 user.setFullName(rs.getString("FullName"));
+                user.setActive(rs.getBoolean("isActive")); // ✅ Đảm bảo đọc cả trạng thái tài khoản
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,7 +122,7 @@ public class UsersDao {
         }
         return null; // Trả về null nếu không tìm thấy user
     }
-    
+
     public static Users getUserByUserId(int userID) {
         DBContext db = DBContext.getInstance();
         String sql = "SELECT * FROM Users WHERE UserID = ?";
@@ -143,7 +145,76 @@ public class UsersDao {
         }
         return null; // Trả về null nếu không tìm thấy user
     }
+
+    public boolean updateUserStatus(int userID, boolean isActive) {
+        DBContext db = DBContext.getInstance();
+        String sql = "UPDATE Users SET IsActive = ? WHERE UserID = ?";
+
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setBoolean(1, isActive);
+            stmt.setInt(2, userID);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Users> getUsersByRole(int roleID, boolean isActive) {
+        DBContext db = DBContext.getInstance();
+        List<Users> usersList = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE RoleID = ? AND isActive = ?";
+
+        try (PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, roleID);
+            stmt.setBoolean(2, isActive);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Users user = new Users();
+                user.setUserID(rs.getInt("UserID"));
+                user.setFullName(rs.getString("FullName"));
+                user.setEmail(rs.getString("Email"));
+                user.setPhone(rs.getString("Phone"));
+                user.setAddress(rs.getString("Address"));
+                user.setActive(rs.getBoolean("isActive")); // ✅ Đảm bảo khớp với model
+
+                usersList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usersList;
+    }
+    public List<Users> getUsersByRoleAndStatus(int role, boolean isActive) {
+    DBContext db = DBContext.getInstance(); 
+    List<Users> userList = new ArrayList<>();
+    String query = "SELECT * FROM Users WHERE roleID = ? AND isActive = ?";
+
+    try (PreparedStatement stmt = db.getConnection().prepareStatement(query)) {
+        stmt.setInt(1, role);
+        stmt.setBoolean(2, isActive);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Users user = new Users();
+                user.setUserID(rs.getInt("userID"));
+                user.setFullName(rs.getString("FullName"));
+                user.setEmail(rs.getString("Email"));
+                user.setPhone(rs.getString("Phone"));
+                user.setAddress(rs.getString("Address"));
+                user.setActive(rs.getBoolean("isActive"));
+                userList.add(user);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return userList;
+}
+
     
+
     public static void main(String[] args) {
         Users user = new Users();
         Users users = UsersDao.getUserByEmail("NguyenVanG@gmail.com");

@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
-/**
- *
- * @author maiki
- */
 public class Users {
     private int UserID; 
     private String FullName;
@@ -16,11 +8,12 @@ public class Users {
     private int RoleID;
     private String Phone;
     private String Address;
+    private boolean isActive; // ✅ Thêm thuộc tính này
 
     public Users() {
     }
 
-    public Users(int UserID, String FullName, String Email, String Password, int RoleID, String Phone, String Address) {
+    public Users(int UserID, String FullName, String Email, String Password, int RoleID, String Phone, String Address, boolean isActive) {
         this.UserID = UserID;
         this.FullName = FullName;
         this.Email = Email;
@@ -28,6 +21,7 @@ public class Users {
         this.RoleID = RoleID;
         this.Phone = Phone;
         this.Address = Address;
+        this.isActive = isActive; // ✅ Cập nhật trạng thái tài khoản
     }
 
     public int getUserID() {
@@ -86,10 +80,16 @@ public class Users {
         this.Address = Address;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" + "UserID=" + UserID + ", FullName=" + FullName + ", Email=" + Email + ", Password=" + Password + ", RoleID=" + RoleID + ", Phone=" + Phone + ", Address=" + Address + '}';
+    public boolean isActive() { // ✅ Thêm getter cho `isActive`
+        return isActive;
     }
 
-    
+    public void setActive(boolean isActive) { // ✅ Thêm setter cho `isActive`
+        this.isActive = isActive;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" + "UserID=" + UserID + ", FullName=" + FullName + ", Email=" + Email + ", Password=" + Password + ", RoleID=" + RoleID + ", Phone=" + Phone + ", Address=" + Address + ", isActive=" + isActive + '}';
+    }
 }

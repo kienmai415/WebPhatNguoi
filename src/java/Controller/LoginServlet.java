@@ -89,6 +89,7 @@ public class LoginServlet extends HttpServlet {
         // Lấy dữ liệu từ form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+
         if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             request.setAttribute("error", "Email và mật khẩu không được để trống!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -115,27 +116,30 @@ public class LoginServlet extends HttpServlet {
         Users user = usersDao.authenticate(email, password);
 
         if (user != null) {
+            // Kiểm tra tài khoản có bị vô hiệu hóa không
+            if (!user.isActive()) {
+                request.setAttribute("error", "🚫 Tài khoản của bạn đã bị vô hiệu hóa.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
             // Đăng nhập thành công -> Lưu vào session
             HttpSession session = request.getSession();
             session.setAttribute("FullName", user.getFullName());
-            session.setAttribute("role", user.getRoleID()); // userRole phải là "police" nếu là cảnh sát
+            session.setAttribute("role", user.getRoleID());
             session.setAttribute("userId", user.getUserID());
+            session.setAttribute("loggedUser", user);
+
             if (user.getRoleID() == 1) {
-                session.setAttribute("loggedUser", user);
                 response.sendRedirect("admin.jsp");
             } else if (user.getRoleID() == 2) {
-                session.setAttribute("loggedUser", user);
                 response.sendRedirect("police.jsp");
             } else {
-                session.setAttribute("loggedUser", user);
                 response.sendRedirect("home.jsp");
             }
-            // Điều hướng về trang home.jsp
-//            response.sendRedirect("home.jsp");
         } else {
             // Đăng nhập thất bại -> Hiển thị lỗi
-            LOGGER.log(Level.SEVERE, "❌ Sai email hoặc mật khẩu!");
-            //request.setAttribute("error", "❌ Sai tài khoản hoặc mật khẩu!");
+            request.setAttribute("error", "❌ Sai email hoặc mật khẩu!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
